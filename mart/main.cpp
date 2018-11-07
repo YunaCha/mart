@@ -28,7 +28,8 @@ int main(void)
     {
 		if (mode == NORMAL_MODE)
 		{
-			DisplayClock(hou,min,sec);
+			DisplayClock(hou,min,sec);			
+			_delay_ms(100);
 		}
     }
 }

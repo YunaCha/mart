@@ -8,6 +8,38 @@
 #include <stdio.h>
 #include "lcd.h"
 
+#define NORMAL_MODE 0
+#define MENU_MODE 1
+#define CALC_MODE 2
+#define TOTAL_MODE 3
+
+#define KEY_1 238
+#define KEY_2 222
+#define KEY_3 190
+#define KEY_4 126
+#define KEY_5 237
+#define KEY_6 221
+#define KEY_7 189
+#define KEY_8 125
+#define KEY_9 235
+#define KEY_MENU 219
+#define KEY_PLUS 126
+#define KEY_LOBBY 119
+#define KEY_CHANGE 183
+
+unsigned char getKey()
+{
+	unsigned char key = 0;
+	for (int i=0; i<4; i++)
+	{
+		PORTD = ~(0x00 | (1 << i));
+		_delay_ms(5);
+		key = ~PIND & 0xf0;
+		if (key) return PIND;
+	}
+	return 0;
+}
+
 void initSystem()
 {
 	// Register Setting
