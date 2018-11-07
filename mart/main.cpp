@@ -1,8 +1,4 @@
 #include "myFunc.h"
-#define NORMAL_MODE 0
-#define MENU_MODE 1
-#define CALC_MODE 2
-#define TOTAL_MODE 3
 
 unsigned int tCount = 0, hou = 0, min = 0, sec = 0;
 int mode = NORMAL_MODE;
@@ -24,13 +20,34 @@ ISR(TIMER0_OVF_vect)
 int main(void)
 {
 	initSystem();
+	unsigned char inputKey = 0;
     while (1) 
     {
+		inputKey = getKey();
 		if (mode == NORMAL_MODE)
 		{
 			DisplayClock(hou,min,sec);			
-			_delay_ms(100);
+			if (inputKey == KEY_MENU) mode = MENU_MODE;			
 		}
+		else if (mode == MENU_MODE)
+		{
+			lcd_putsf(0,0,(unsigned char *)"1: Calculation  ");
+			lcd_putsf(0,1,(unsigned char *)"1: Total Sales  ");
+			if (inputKey == KEY_1) mode = CALC_MODE;
+			else if (inputKey == KEY_2) mode = TOTAL_MODE;
+			inputKey = 0;
+			_delay_ms(50);
+		}
+		else if (mode == CALC_MODE)
+		{
+			lcd_putsf(0,0,(unsigned char *)"Calculation Mode  ");
+		}
+		else if (mode == TOTAL_MODE)
+		{
+			lcd_putsf(0,0,(unsigned char *)"Total Sales Mode  ");
+		}
+		// Whenever client push the lobby key, then go back to normal mode.		
+		if (inputKey == KEY_LOBBY) mode = NORMAL_MODE;
     }
 }
 
