@@ -21,26 +21,51 @@ int main(void)
 {
 	initSystem();
 	unsigned char inputKey = 0;
+	unsigned long long currentPrice = 0, totalPrice;
+	unsigned int flag = 0;
     while (1) 
     {
 		inputKey = getKey();
 		if (mode == NORMAL_MODE)
 		{
 			DisplayClock(hou,min,sec);			
-			if (inputKey == KEY_MENU) mode = MENU_MODE;			
+			if (inputKey == KEY_MENU) { mode = MENU_MODE; lcd_clear(); }
 		}
 		else if (mode == MENU_MODE)
 		{
 			lcd_putsf(0,0,(unsigned char *)"1: Calculation  ");
-			lcd_putsf(0,1,(unsigned char *)"1: Total Sales  ");
-			if (inputKey == KEY_1) mode = CALC_MODE;
-			else if (inputKey == KEY_2) mode = TOTAL_MODE;
+			lcd_putsf(0,1,(unsigned char *)"2: Total Sales  ");
+			if (inputKey == KEY_1) { mode = CALC_MODE; lcd_clear(); }
+			else if (inputKey == KEY_2) { mode = TOTAL_MODE; lcd_clear(); }
 			inputKey = 0;
 			_delay_ms(50);
 		}
 		else if (mode == CALC_MODE)
 		{
 			lcd_putsf(0,0,(unsigned char *)"Calculation Mode  ");
+			if (flag == 0)
+			{	
+				if (inputKey == KEY_0) currentPrice = (currentPrice * 10) + 0;
+				else if (inputKey == KEY_1) currentPrice = (currentPrice * 10) + 1;
+				else if (inputKey == KEY_2) currentPrice = (currentPrice * 10) + 1;
+				else if (inputKey == KEY_3) currentPrice = (currentPrice * 10) + 1;
+				else if (inputKey == KEY_4) currentPrice = (currentPrice * 10) + 1;
+				else if (inputKey == KEY_5) currentPrice = (currentPrice * 10) + 1;
+				else if (inputKey == KEY_6) currentPrice = (currentPrice * 10) + 1;
+				else if (inputKey == KEY_7) currentPrice = (currentPrice * 10) + 1;
+				else if (inputKey == KEY_8) currentPrice = (currentPrice * 10) + 1;
+				else if (inputKey == KEY_9) currentPrice = (currentPrice * 10) + 1;
+				else if (inputKey == KEY_PLUS) 
+				{
+					totalPrice = totalPrice + currentPrice;
+					currentPrice = 0;
+				}
+				flag = 1;
+			}
+			if (inputKey == 0) flag = 0;
+			char str[16];
+			sprintf(str,"%ld",currentPrice);
+			lcd_putsf(0,1,(unsigned char *)str);
 		}
 		else if (mode == TOTAL_MODE)
 		{

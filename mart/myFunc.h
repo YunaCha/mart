@@ -13,6 +13,7 @@
 #define CALC_MODE 2
 #define TOTAL_MODE 3
 
+#define KEY_0 111
 #define KEY_1 238
 #define KEY_2 222
 #define KEY_3 190
